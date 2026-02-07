@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎂 채채 생일 축하해! 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&family=Bagel+Fat+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFF8F0;
+    --pink: #FFB6C1;
+    --rose: #E8A0BF;
+    --peach: #FFD4B8;
+    --lavender: #D4B8FF;
+    --mint: #B8E8D4;
+    --gold: #FFD700;
+    --soft-brown: #8B7355;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Gowun Batang', serif;
+    overflow-x: hidden;
+    color: #5a4a3a;
+  }
+
+  /* Floating particles */
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: floatUp linear infinite;
+    opacity: 0.6;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(255,182,193,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(212,184,255,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(255,212,184,0.3) 0%, transparent 50%),
+      var(--cream);
+  }
+
+  .hero-cake {
+    font-size: 5rem;
+    animation: bounce 2s ease-in-out infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  .hero h1 {
+    font-family: 'Bagel Fat One', cursive;
+    font-size: clamp(3rem, 8vw, 6rem);
+    background: linear-gradient(135deg, var(--rose), var(--lavender), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.3;
+    animation: fadeInUp 1s ease-out 0.3s both;
+  }
+
+  .hero .subtitle {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--soft-brown);
+    margin-top: 1rem;
+    animation: fadeInUp 1s ease-out 0.6s both;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    animation: fadeInUp 1s ease-out 1.2s both, gentleBounce 2s ease-in-out infinite 2s;
+    font-size: 1.2rem;
+    color: var(--rose);
+  }
+
+  @keyframes gentleBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Gallery Section */
+  .gallery-section {
+    position: relative;
+    z-index: 1;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: clamp(2rem, 5vw, 3rem);
+    text-align: center;
+    color: var(--rose);
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .section-title::after {
+    content: '✿ ✿ ✿';
+    display: block;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    letter-spacing: 1rem;
+    opacity: 0.6;
+  }
+
+  /* Polaroid-style photo cards */
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    padding: 1rem;
+  }
+
+  .polaroid {
+    background: white;
+    padding: 12px 12px 50px 12px;
+    box-shadow: 
+      0 4px 15px rgba(0,0,0,0.08),
+      0 1px 3px rgba(0,0,0,0.06);
+    border-radius: 4px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    position: relative;
+    opacity: 0;
+    animation: polaroidIn 0.8s ease-out forwards;
+  }
+
+  .polaroid:nth-child(1) { animation-delay: 0.1s; transform: rotate(-2deg); }
+  .polaroid:nth-child(2) { animation-delay: 0.2s; transform: rotate(1.5deg); }
+  .polaroid:nth-child(3) { animation-delay: 0.3s; transform: rotate(-1deg); }
+  .polaroid:nth-child(4) { animation-delay: 0.4s; transform: rotate(2deg); }
+  .polaroid:nth-child(5) { animation-delay: 0.5s; transform: rotate(-1.5deg); }
+  .polaroid:nth-child(6) { animation-delay: 0.6s; transform: rotate(1deg); }
+  .polaroid:nth-child(7) { animation-delay: 0.7s; transform: rotate(-2.5deg); }
+  .polaroid:nth-child(8) { animation-delay: 0.8s; transform: rotate(1.8deg); }
+
+  @keyframes polaroidIn {
+    from { opacity: 0; transform: translateY(40px) rotate(0deg) scale(0.9); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .polaroid:hover {
+    transform: rotate(0deg) scale(1.03) translateY(-8px) !important;
+    box-shadow: 
+      0 20px 40px rgba(0,0,0,0.12),
+      0 5px 10px rgba(0,0,0,0.08);
+    z-index: 10;
+  }
+
+  .polaroid img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+  }
+
+  .polaroid .caption {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1.3rem;
+    text-align: center;
+    padding-top: 12px;
+    color: var(--soft-brown);
+    position: absolute;
+    bottom: 12px;
+    left: 0; right: 0;
+  }
+
+  /* Feature photos - larger */
+  .feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    padding: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .feature-row .polaroid img {
+    height: 420px;
+  }
+
+  /* Portrait photos special sizing */
+  .portrait-row {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 1rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .portrait-row .polaroid {
+    width: 240px;
+    flex-shrink: 0;
+  }
+
+  .portrait-row .polaroid img {
+    height: 300px;
+    object-fit: cover;
+    object-position: top;
+  }
+
+  /* Message Section */
+  .message-section {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 4rem auto;
+    padding: 3rem;
+    text-align: center;
+  }
+
+  .message-card {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 10px 40px rgba(232,160,191,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .message-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--pink), var(--lavender), var(--peach), var(--mint));
+  }
+
+  .message-card .big-emoji {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .message-card h2 {
+    font-family: 'Bagel Fat One', cursive;
+    font-size: 2rem;
+    color: var(--rose);
+    margin-bottom: 1.5rem;
+  }
+
+  .message-card p {
+    font-size: 1.15rem;
+    line-height: 2;
+    color: #6b5b4b;
+  }
+
+  .hearts-divider {
+    margin: 1.5rem 0;
+    font-size: 1.2rem;
+    letter-spacing: 0.5rem;
+    opacity: 0.5;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    position: relative;
+    z-index: 1;
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1.5rem;
+    color: var(--rose);
+  }
+
+  .footer .sparkle {
+    font-size: 2rem;
+    display: inline-block;
+    animation: sparkle 1.5s ease-in-out infinite;
+  }
+
+  @keyframes sparkle {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+  }
+
+  /* Tape decoration */
+  .tape {
+    position: absolute;
+    width: 80px;
+    height: 28px;
+    background: rgba(255,215,0,0.35);
+    z-index: 2;
+    transform: rotate(-35deg);
+    top: -8px;
+    left: 20px;
+    border-radius: 2px;
+  }
+
+  .tape-right {
+    left: auto;
+    right: 20px;
+    transform: rotate(35deg);
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .feature-row {
+      grid-template-columns: 1fr;
+    }
+    .feature-row .polaroid img {
+      height: 300px;
+    }
+    .photo-grid {
+      grid-template-columns: 1fr;
+    }
+    .portrait-row .polaroid {
+      width: 200px;
+    }
+    .portrait-row .polaroid img {
+      height: 260px;
+    }
+    .message-card {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  /* Video section */
+  .video-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .video-card {
+    background: white;
+    padding: 12px 12px 50px 12px;
+    box-shadow: 
+      0 4px 15px rgba(0,0,0,0.08),
+      0 1px 3px rgba(0,0,0,0.06);
+    border-radius: 4px;
+    position: relative;
+    max-width: 700px;
+    width: 100%;
+    transform: rotate(-0.5deg);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+  }
+
+  .video-card:hover {
+    transform: rotate(0deg) scale(1.01) translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  }
+
+  .video-card .caption {
+    font-family: 'Nanum Pen Script', cursive;
+    font-size: 1.3rem;
+    text-align: center;
+    padding-top: 12px;
+    color: var(--soft-brown);
+    position: absolute;
+    bottom: 12px;
+    left: 0; right: 0;
+  }
+
+  .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Confetti burst on click */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+    animation: confettiFall 1.5s ease-out forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateY(200px) rotate(720deg) scale(0); opacity: 0; }
+  }
+
+  /* Ribbon decoration */
+  .ribbon {
+    width: 100%;
+    height: 40px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--pink) 0px,
+      var(--pink) 20px,
+      var(--cream) 20px,
+      var(--cream) 40px,
+      var(--lavender) 40px,
+      var(--lavender) 60px,
+      var(--cream) 60px,
+      var(--cream) 80px
+    );
+    opacity: 0.3;
+    position: relative;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-cake">🎂</div>
+  <h1>채채야<br>생일 축하해!</h1>
+  <p class="subtitle">Happy Birthday, 채채 🎀</p>
+  <div class="scroll-hint">↓ 아래로 스크롤 ↓</div>
+</section>
+
+<div class="ribbon"></div>
+
+<!-- Gallery -->
+<section class="gallery-section">
+  <div class="section-title">우리의 소중한 순간들</div>
+
+  <!-- Feature: couple photos -->
+  <div class="feature-row">
+    <div class="polaroid" style="transform: rotate(-2deg);">
+      <div class="tape"></div>
+      <img src="img1.jpeg" alt="채채와 함께">
+      <div class="caption">같이 있으면 행복해 💕</div>
+    </div>
+    <div class="polaroid" style="transform: rotate(1.5deg);">
+      <div class="tape tape-right"></div>
+      <img src="img2.jpeg" alt="채채와 나들이">
+      <div class="caption">우리의 즐거운 나들이 🎠</div>
+    </div>
+  </div>
+
+  <!-- Travel & fun photos -->
+  <div class="section-title">여행과 일상의 기록</div>
+
+  <div class="photo-grid">
+    <div class="polaroid" style="transform: rotate(-1.5deg);">
+      <div class="tape"></div>
+      <img src="img6.jpeg" alt="제주도 바다">
+      <div class="caption">바다와 절벽 앞에서 🌊</div>
+    </div>
+    <div class="polaroid" style="transform: rotate(1deg);">
+      <div class="tape tape-right"></div>
+      <img src="img3.jpeg" alt="화산 해변">
+      <div class="caption">자연 속에서 자유롭게 🌿</div>
+    </div>
+    <div class="polaroid" style="transform: rotate(-2.5deg);">
+      <div class="tape"></div>
+      <img src="img7.jpeg" alt="감성 사진">
+      <div class="caption">분위기 있는 한 컷 🌙</div>
+    </div>
+    <div class="polaroid" style="transform: rotate(1.8deg);">
+      <div class="tape tape-right"></div>
+      <img src="img8.jpeg" alt="포치코 인형">
+      <div class="caption">너무 귀여워! 🧸</div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon"></div>
+
+<!-- Message -->
+<section class="message-section">
+  <div class="message-card">
+    <span class="big-emoji">🎁</span>
+    <h2>채채에게 💌</h2>
+    <p>
+      생일 진심으로 축하해, 채채야!<br>
+      오늘 하루도, 앞으로의 모든 날들도<br>
+      웃음 가득하고 행복한 날이 되길 바라.
+    </p>
+    <div class="hearts-divider">♥ ♥ ♥ ♥ ♥</div>
+    <p>
+      함께한 모든 순간이 소중하고,<br>
+      앞으로도 더 많은 추억을 만들자!<br>
+      항상 건강하고 사랑받는 사람이 되길. 🥰
+    </p>
+  </div>
+</section>
+
+<!-- Video Letter -->
+<section class="gallery-section">
+  <div class="section-title">영상 편지 💌</div>
+  <div class="video-wrapper">
+    <div class="video-card">
+      <div class="tape"></div>
+      <div class="tape tape-right"></div>
+      <div class="video-container">
+        <iframe 
+          src="https://www.youtube-nocookie.com/embed/k6iXSajlh_E?si=TR7D676lopUhdU-y" 
+          title="채채에게 보내는 영상편지" 
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          allowfullscreen>
+        </iframe>
+      </div>
+      <div class="caption">채채에게 보내는 영상편지 🎬</div>
+    </div>
+  </div>
+</section>
+
+<div class="ribbon"></div>
+
+<!-- Footer -->
+<div class="footer">
+  <span class="sparkle">✨</span>
+  With all my love, Happy Birthday 채채!
+  <span class="sparkle">✨</span>
+</div>
+
+<script>
+  // Floating particles
+  const emojis = ['🎈','🎀','🌸','💕','🎂','🎁','⭐','🩷','🌷','✨','🧁','🎉'];
+  const container = document.getElementById('particles');
+  
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 15) + 's';
+    p.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+    container.appendChild(p);
+  }
+
+  // Confetti on click
+  document.addEventListener('click', (e) => {
+    const colors = ['#FFB6C1','#D4B8FF','#FFD4B8','#B8E8D4','#FFD700','#FF69B4'];
+    for (let i = 0; i < 12; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.left = e.clientX + 'px';
+      c.style.top = e.clientY + 'px';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.transform = `translate(${(Math.random()-0.5)*150}px, 0)`;
+      c.style.animation = `confettiFall ${0.8+Math.random()*0.7}s ease-out forwards`;
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 50 + Math.random() * 100;
+      c.animate([
+        { transform: 'translate(0,0) scale(1)', opacity: 1 },
+        { transform: `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist + 100}px) scale(0)`, opacity: 0 }
+      ], { duration: 1000 + Math.random()*500, easing: 'ease-out' });
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 2000);
+    }
+  });
+
+  // Intersection Observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.polaroid').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
